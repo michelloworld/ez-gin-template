@@ -20,10 +20,21 @@ I have found some code in Github ([multitemplate.go](https://github.com/gin-goni
 
 ### How to use
 
+##### 1. Download package to your workspace
+```go
+go get https://github.com/michelloworld/ez-gin-template
+```
+
+##### 2. Import package to your application
+```go
+import "github.com/michelloworld/ez-gin-template"
+```
+
+##### 3. Enjoy
 ```go
   r := gin.Default()
 
-  render := ezrender.New()
+  render := eztemplate.New()
 
   // render.TemplatesDir = "app/views/" // default
 
