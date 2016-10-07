@@ -1,0 +1,7 @@
+{{ define "content" }}
+	{{ range $key, $blog := .blogs }}
+		<h3>
+			<a href="/blog/view/{{ $blog.Id }}">{{ $blog.Title }}</a>
+		</h3>
+	{{ end }}
+{{ end }}

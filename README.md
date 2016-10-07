@@ -20,6 +20,18 @@ I have found some code in Github ([multitemplate.go](https://github.com/gin-goni
 
 ### How to use
 
+Suppose your structure is
+```go
+|-- app/views/
+    |-- layouts/
+        |--- base.html
+    |-- blogs/
+        |--- index.html          
+        |--- show.html
+
+See in "example" folder
+```
+
 ##### 1. Download package to your workspace
 ```go
 go get https://github.com/michelloworld/ez-gin-template
