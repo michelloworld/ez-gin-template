@@ -4,6 +4,8 @@ When i start using Gin i struggling with template system. I find out many people
 
 I have found some code in Github ([multitemplate.go](https://github.com/gin-gonic/contrib/tree/master/renders/multitemplate), [gin_html_render.go](https://gist.github.com/madhums/4340cbeb36871e227905)) which help but not everything i need is supported like Template helpers.
 
+**Check it out** my package in official gin contribute repository: [gin-gonic/contrib](https://github.com/gin-gonic/contrib)
+
 ### Feature
 - Simple rendering syntax for the template
 
