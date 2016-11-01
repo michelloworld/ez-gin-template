@@ -2,6 +2,7 @@ package eztemplate
 
 import (
 	"html/template"
+	"log"
 	"path/filepath"
 	"strings"
 
@@ -42,17 +43,20 @@ func (r Render) Init() Render {
 	viewDirs, _ := filepath.Glob(r.TemplatesDir + "**/*" + r.Ext)
 
 	for _, view := range viewDirs {
-		rendername := getRenderName(view)
-		r.AddFromFiles(rendername, layout, view)
+		renderName := r.getRenderName(view)
+		if r.Debug {
+			log.Printf("[GIN-debug] %-6s %-25s --> %s\n", "LOAD", view, renderName)
+		}
+		r.AddFromFiles(renderName, layout, view)
 	}
 
 	return r
 }
 
-func getRenderName(tpl string) string {
+func (r Render) getRenderName(tpl string) string {
 	dir, file := filepath.Split(tpl)
-	dir = strings.Replace(dir, "app/views/", "", 1)
-	file = strings.TrimSuffix(file, ".html")
+	dir = strings.Replace(dir, r.TemplatesDir, "", 1)
+	file = strings.TrimSuffix(file, r.Ext)
 	return dir + file
 }
 
