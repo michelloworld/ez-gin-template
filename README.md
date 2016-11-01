@@ -39,9 +39,9 @@ See in "example" folder
 go get https://github.com/michelloworld/ez-gin-template
 ```
 
-##### 2. Import package to your application
+##### 2. Import package to your application (*Import with alias)
 ```go
-import "github.com/michelloworld/ez-gin-template"
+import eztemplate "github.com/michelloworld/ez-gin-template"
 ```
 
 ##### 3. Enjoy
@@ -55,6 +55,8 @@ import "github.com/michelloworld/ez-gin-template"
   // render.Layout = "layouts/base"     // default
 
   // render.Ext = ".html"               // default
+
+  // render.Debug = false               // default
 
   // render.TemplateFuncMap = template.FuncMap{}
 
