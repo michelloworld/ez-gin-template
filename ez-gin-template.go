@@ -77,12 +77,16 @@ func (r Render) findPartials(findPartialDir string) []string {
 	path := filepath.Join(findPartialDir, "*"+r.Ext)
 	partialDir, _ := filepath.Glob(path)
 	for _, view := range partialDir {
-		renderName := r.getRenderName(view)
-		if r.Debug {
-			log.Printf("[GIN-debug] %-6s %-25s --> %s\n", "LOAD Partial", view, renderName)
-		}
+		templateFileName := filepath.Base(view)
+		//skip partials
+		if strings.Index(templateFileName, "_") == 0 {
+			renderName := r.getRenderName(view)
+			if r.Debug {
+				log.Printf("[GIN-debug] %-6s %-25s --> %s\n", "LOAD Partial1", view, renderName)
+			}
 
-		files = append(files, view)
+			files = append(files, view)
+		}
 	}
 	return files
 }
