@@ -82,7 +82,7 @@ func (r Render) findPartials(findPartialDir string) []string {
 		if strings.Index(templateFileName, "_") == 0 {
 			renderName := r.getRenderName(view)
 			if r.Debug {
-				log.Printf("[GIN-debug] %-6s %-25s --> %s\n", "LOAD Partial1", view, renderName)
+				log.Printf("[GIN-debug] %-6s %-25s --> %s\n", "LOAD Partial", view, renderName)
 			}
 
 			files = append(files, view)
