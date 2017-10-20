@@ -20,6 +20,12 @@ I have found some code in Github ([multitemplate.go](https://github.com/gin-goni
 - Feels friendlier for people coming from communities like rails, express or django.
 - **Template Helpers** ([gin_html_render.go](https://gist.github.com/madhums/4340cbeb36871e227905) is not support yet)
 
+#### Partials
+
+Supports rails style partials, simply name any template with underscore starting. So If you have "dashboard/index.tmpl" add "dashboard/_header.tmpl". Also there is a shared partial directory called "partials" under your template directory,
+anything you put there will be included with all templates.
+
+
 ### How to use
 
 Suppose your structure is
@@ -57,6 +63,7 @@ import eztemplate "github.com/michelloworld/ez-gin-template"
   // render.Ext = ".html"               // default
 
   // render.Debug = false               // default
+
 
   // render.TemplateFuncMap = template.FuncMap{}
 
