@@ -3,6 +3,7 @@ package eztemplate
 import (
 	"html/template"
 	"log"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -40,7 +41,7 @@ func New() Render {
 func (r Render) Init() Render {
 	layout := r.TemplatesDir + r.Layout + r.Ext
 
-	viewDirs, _ := filepath.Glob(r.TemplatesDir + "**/*" + r.Ext)
+	viewDirs, _ := filepath.Glob(r.TemplatesDir + "**" + string(os.PathSeparator) + "*" + r.Ext)
 
 	for _, view := range viewDirs {
 		renderName := r.getRenderName(view)
@@ -55,7 +56,9 @@ func (r Render) Init() Render {
 
 func (r Render) getRenderName(tpl string) string {
 	dir, file := filepath.Split(tpl)
-	dir = strings.Replace(dir, r.TemplatesDir, "", 1)
+	dir = strings.Replace(dir, string(os.PathSeparator), "/", -1)
+	tempdir := strings.Replace(r.TemplatesDir, string(os.PathSeparator), "/", -1)
+	dir = strings.Replace(dir, tempdir, "", 1)
 	file = strings.TrimSuffix(file, r.Ext)
 	return dir + file
 }
