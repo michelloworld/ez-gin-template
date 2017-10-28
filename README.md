@@ -26,6 +26,25 @@ Supports rails style partials, simply name any template with underscore starting
 anything you put there will be included with all templates.
 
 
+###### Partials Example
+
+dashboard/_header.tmpl - define the template name
+
+```go
+{{define "header"}}
+  <h1>Hi, This is Header</h1>
+{{ end }}
+```
+
+dashboard/index.tmpl - call partial template by it's name
+
+```go
+{{define "content"}}
+  Bla Bla Bla...
+  {{template "header" .}}
+{{ end }}
+```
+
 ### How to use
 
 Suppose your structure is
