@@ -13,6 +13,7 @@ import (
 type Render struct {
 	Templates       map[string]*template.Template
 	TemplatesDir    string
+	PartialDir      string
 	Layout          string
 	Ext             string
 	TemplateFuncMap map[string]interface{}
@@ -25,6 +26,8 @@ func New() Render {
 		Templates: map[string]*template.Template{},
 		// TemplatesDir holds the location of the templates
 		TemplatesDir: "app/views/",
+		// PartialDir holds the location of shared partials
+		PartialDir: "partials/",
 		// Layout is the file name of the layout file
 		Layout: "layouts/base",
 		// Ext is the file extension of the rendered templates
@@ -39,21 +42,55 @@ func New() Render {
 }
 
 func (r Render) Init() Render {
+	globalPartials := r.getGlobalPartials()
+
 	layout := r.TemplatesDir + r.Layout + r.Ext
 
 	viewDirs, _ := filepath.Glob(r.TemplatesDir + "**" + string(os.PathSeparator) + "*" + r.Ext)
 
+	fullPartialDir := filepath.Join(r.TemplatesDir + r.PartialDir)
 	for _, view := range viewDirs {
-		renderName := r.getRenderName(view)
-		if r.Debug {
-			log.Printf("[GIN-debug] %-6s %-25s --> %s\n", "LOAD", view, renderName)
+		templateFileName := filepath.Base(view)
+		//skip partials
+		if strings.Index(templateFileName, "_") != 0 && strings.Index(view, fullPartialDir) != 0 {
+			localPartials := r.findPartials(filepath.Dir(view))
+
+			renderName := r.getRenderName(view)
+			if r.Debug {
+				log.Printf("[GIN-debug] %-6s %-25s --> %s\n", "LOAD", view, renderName)
+			}
+			allFiles := []string{layout, view}
+			allFiles = append(allFiles, globalPartials...)
+			allFiles = append(allFiles, localPartials...)
+			r.AddFromFiles(renderName, allFiles...)
 		}
-		r.AddFromFiles(renderName, layout, view)
 	}
 
 	return r
 }
 
+func (r Render) getGlobalPartials() []string {
+	return r.findPartials(filepath.Join(r.TemplatesDir, r.PartialDir))
+}
+
+func (r Render) findPartials(findPartialDir string) []string {
+	files := []string{}
+	path := filepath.Join(findPartialDir, "*"+r.Ext)
+	partialDir, _ := filepath.Glob(path)
+	for _, view := range partialDir {
+		templateFileName := filepath.Base(view)
+		//skip partials
+		if strings.Index(templateFileName, "_") == 0 {
+			renderName := r.getRenderName(view)
+			if r.Debug {
+				log.Printf("[GIN-debug] %-6s %-25s --> %s\n", "LOAD Partial", view, renderName)
+			}
+
+			files = append(files, view)
+		}
+	}
+	return files
+}
 func (r Render) getRenderName(tpl string) string {
 	dir, file := filepath.Split(tpl)
 	dir = strings.Replace(dir, string(os.PathSeparator), "/", -1)
